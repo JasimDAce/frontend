@@ -85,12 +85,12 @@ const Navbar = () => {
             >
               Work
             </a>
-            <a
+            <Link
               className="py-3 ps-px sm:px-3 font-medium text-white/80 hover:text-white"
-              href="#"
+              href="/todo-list"
             >
-              Blog
-            </a>
+              TodoList
+            </Link>
             <div className="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] py-3 ps-px sm:px-3">
               <button
                 type="button"
@@ -147,12 +147,12 @@ const Navbar = () => {
                     >
                       About
                     </a>
-                    <a
+                    <Link
                       className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                      href="#"
+                      href="/todo-list"
                     >
-                      Downloads
-                    </a>
+                      TodoList
+                    </Link>
                     <a
                       className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
                       href="#"
