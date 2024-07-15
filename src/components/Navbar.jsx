@@ -91,6 +91,12 @@ const Navbar = () => {
             >
               TodoList
             </Link>
+            <Link
+              className="py-3 ps-px sm:px-3 font-medium text-white/80 hover:text-white"
+              href="/chat"
+            >
+              Chat
+            </Link>
             <div className="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] py-3 ps-px sm:px-3">
               <button
                 type="button"
@@ -201,13 +207,6 @@ const Navbar = () => {
       </nav>
     </header>
     {/* ========== END HEADER ========== */}
-    {/* ========== MAIN CONTENT ========== */}
-    <main id="content">
-      <div className="max-w-[85rem] mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        {/* your content goes here ... */}
-      </div>
-    </main>
-    {/* ========== END MAIN CONTENT ========== */}
   </>
   
   )
