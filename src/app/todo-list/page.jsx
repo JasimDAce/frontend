@@ -34,7 +34,6 @@ const TodoList = () => {
   };
 
   const deleteTask = (index) => {
-    console.log(index);
     const temp = taskList;
     temp.splice(index, 1);
     setTaskList([...temp]);
