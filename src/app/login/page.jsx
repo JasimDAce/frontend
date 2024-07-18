@@ -17,7 +17,7 @@ const LoginSchema = Yup.object().shape({
     ),
 });
 
-const Login = () => {
+const Signin = () => {
   const loginForm = useFormik({
     initialValues: {
       name: "",
@@ -243,4 +243,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;

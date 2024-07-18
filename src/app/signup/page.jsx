@@ -18,7 +18,11 @@ const SignupSchema = Yup.object().shape({
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-    ),
+    )
+
+    // .matches(/[a-z]/,'must include lowercase')
+    // .matches(/[A-Z]/,'must contain uppercase')  
+    ,
 });
 
 const Signup = () => {
