@@ -1,39 +1,40 @@
-'use client'
+"use client";
 import { useFormik } from "formik";
 import React from "react";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Name is required'),
-  email: Yup.string().email('Invalid email').required('Required'),
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  confirmPassword: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
+  password: Yup.string()
+    .required("Please Enter your password")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
 });
 
 const Signup = () => {
-
-  
-
-
-
-    const signupForm = useFormik({
-
-        initialValues: {
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        },
-        onSubmit: (values) => {
-          console.log(values);
-          // send values to backend
-        },
-        validationSchema: SignupSchema
-
-    });
-
-
+  const signupForm = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      // send values to backend
+    },
+    validationSchema: SignupSchema,
+  });
 
   return (
     <div className="flex justify-center mt-8">
@@ -88,7 +89,7 @@ const Signup = () => {
               Or
             </div>
             {/* Form */}
-            <form onSubmit={ signupForm.handleSubmit}>
+            <form onSubmit={signupForm.handleSubmit}>
               <div className="grid gap-y-4">
                 {/* Form Group */}
                 <div>
@@ -100,7 +101,6 @@ const Signup = () => {
                   </label>
                   <div className="relative">
                     <input
-
                       type="text"
                       id="name"
                       onChange={signupForm.handleChange}
@@ -122,17 +122,11 @@ const Signup = () => {
                       </svg>
                     </div>
                   </div>
-                  {
-                    signupForm.touched.name && (
-                      <p
-                      className=" text-xs text-red-600 mt-2"
-                      id="email-error"
-                    >
+                  {signupForm.touched.name && (
+                    <p className=" text-xs text-red-600 mt-2" id="email-error">
                       {signupForm.errors.name}
                     </p>
-                    )
-                  }
-                 
+                  )}
                 </div>
                 <div>
                   <label
@@ -164,13 +158,12 @@ const Signup = () => {
                       </svg>
                     </div>
                   </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="email-error"
-                  >
-                    Please include a valid email address so we can get back to
-                    you
-                  </p>
+                  {signupForm.touched.email && (
+                    <p className=" text-xs text-red-600 mt-2"
+                      id="password-error">
+                      {signupForm.errors.email}
+                    </p>
+                  )}
                 </div>
                 {/* End Form Group */}
                 {/* Form Group */}
@@ -204,12 +197,12 @@ const Signup = () => {
                       </svg>
                     </div>
                   </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="password-error"
-                  >
-                    8+ characters required
-                  </p>
+                  {signupForm.touched.password && (
+                    <p className=" text-xs text-red-600 mt-2"
+                      id="password-error">
+                      {signupForm.errors.password}
+                    </p>
+                  )}
                 </div>
                 {/* End Form Group */}
                 {/* Form Group */}
@@ -243,12 +236,12 @@ const Signup = () => {
                       </svg>
                     </div>
                   </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="password-error"
-                  >
-                    8+ characters required
-                  </p>
+                  {signupForm.touched.confirmPassword && (
+                    <p className=" text-xs text-red-600 mt-2"
+                      id="password-error">
+                      {signupForm.errors.confirmPassword}
+                    </p>
+                  )}
                 </div>
                 {/* End Form Group */}
                 {/* Checkbox */}
