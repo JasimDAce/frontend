@@ -1,6 +1,9 @@
 "use client";
+import axios from "axios";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 const SignupSchema = Yup.object().shape({
@@ -26,6 +29,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+  const router = useRouter();
   const signupForm = useFormik({
     initialValues: {
       name: "",
@@ -33,9 +37,28 @@ const Signup = () => {
       password: "",
       confirmPassword: "",
     },
-    onSubmit: (values) => {
+    onSubmit: (values ,{resetForm ,setSubmitting}) => {
       console.log(values);
       // send values to backend
+      //making a request on backend to save data
+      //fetch or we can use axios 
+      //install axios
+      //https is secure and we have to have a certificate to use it
+      //fetch we have to set it in json in axios we dont need it
+      axios.post('http://localhost:5000/user/add',values)
+      .then((response) => {
+        console.log(response.status);
+        resetForm();
+        toast.success('User Registered Successfully');
+        //router.push('it is used to redirect to any page')
+        router.push('/');
+      }).catch((err) => {
+        console.log(err);
+        if(err.response.data.code === 11000){
+          toast.error('Email already exists');
+        }
+        setSubmitting(false);
+      });
     },
     validationSchema: SignupSchema,
   });
