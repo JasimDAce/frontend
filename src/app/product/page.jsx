@@ -1,80 +1,117 @@
+"use client";
+import { useFormik } from "formik";
 import React from "react";
-import toast from "react-hot-toast";
-import * as Yup from "yup";
+import * as yup from "yup";
 
-// const SignupSchema = Yup.object().shape({
-//     name: Yup.string()
-//       .min(2, "Too Short!")
-//       .max(50, "Too Long!")
-//       .required("Name is required"),
-//     email: Yup.string().email("Invalid email").required("Required"),
-//     confirmPassword: Yup.string().oneOf(
-//       [Yup.ref("password"), null],
-//       "Passwords must match"
-//     ),
-//     password: Yup.string()
-//       .required("Please Enter your password")
-//       .matches(
-//         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-//         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-//       )
-  
-//       // .matches(/[a-z]/,'must include lowercase')
-//       // .matches(/[A-Z]/,'must contain uppercase')  
-//       ,
-//   });
+const BasicSchema = yup.object().shape({
+  product: yup.string().max(25).required("Required"),
+  price: yup.number().required("Required").positive("Price should be positive"),
+  variant: yup.string().required("Required").max(15),
+  weight: yup.number().required("Required"),
+});
 
-const Product = () => {
-   // const router = useRouter();
-    const signupForm = useFormik({
-      initialValues: {
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      },
-      onSubmit: (values ,{resetForm ,setSubmitting}) => {
-        console.log(values);
-        // send values to backend
-        //making a request on backend to save data
-        //fetch or we can use axios 
-        //install axios
-        //https is secure and we have to have a certificate to use it
-        //fetch we have to set it in json in axios we dont need it
-        axios.post('http://localhost:5000/user/add',values)
-        .then((response) => {
-          console.log(response.status);
-          resetForm();
-          toast.success('User Registered Successfully');
-          //router.push('it is used to redirect to any page')
-          router.push('/');
-        }).catch((err) => {
-          console.log(err);
-          if(err.response.data.code === 11000){
-            toast.error('Email already exists');
-          }
-          setSubmitting(false);
-        });
-      },
-      validationSchema: SignupSchema,
-    });
-  
-  return (
-    <div className='flex flex-col justify-center items-center h-screen bg-gray-500'>
-        <form action="" className='flex flex-col justify-right text-start items-center bg-gray-400 p-10'>
-            <label htmlFor="">Product Name</label>
-            <input className='px-2' type="text" />
-            <label htmlFor="">Price</label>
-            <input className='px-2' type="text" />
-            <label htmlFor="">Color</label>
-            <input className='px-2' type="text" />
-            <label htmlFor="">Weight</label>
-            <input className='px-2' type="text" />
-            <label htmlFor="">Variant</label>
-            <input className='px-2' type="text" />
-        </form>
-    </div>
-  )
+const onSubmit = () =>{
+  console.log("submitted")
 }
 
-export default Product
+const Product = () => {
+  const { values, handleBlur, handleChange, handleSubmit,errors,touched } = useFormik({
+    initialValues: {
+      product: "",
+      price: "",
+      variant: "",
+      weight: "",
+    },
+    validationSchema: BasicSchema,
+    onSubmit,
+  });
+  console.log(errors);
+  return (
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-700">
+      <form
+        action=""
+        className="flex flex-col justify-right text-start bg-gray-500 p-14 pt-6 gap-4 rounded-lg"
+        onSubmit={handleSubmit}
+      >
+        <h1 className="text-center text-3xl font-bold pb-3 text-white">
+          Products
+        </h1>
+        <div className="flex flex-col">
+        <label className="text-white" htmlFor="">
+          Product Name
+        </label>
+        <input
+          value={values.product}
+          onChange={handleChange}
+          id="product"
+          className="px-2 rounded-sm outline-none"
+          type="text"
+        />
+        {touched.product && (
+          <p className=" text-xs text-red-600 mt-2" id="email-error">
+          {errors.product}
+        </p>
+        )}
+        </div>
+        
+        
+        <div className="flex flex-col">
+        <label className="text-white" htmlFor="">
+          Price
+        </label>
+        <input
+          id="price"
+          value={values.price}
+          onChange={handleChange}
+          className=" px-2 rounded-sm outline-none"
+          type="text"
+        />
+        {touched.price && (
+          <p className=" text-xs text-red-600 mt-2" id="email-error">
+          {errors.price}
+        </p>
+        )}
+        </div>
+        
+        <div className="flex flex-col">
+          <label className="text-white" htmlFor="">
+            Variant
+          </label>
+          <input
+            value={values.variant}
+            onChange={handleChange}
+            id="variant"
+            className="px-2 rounded-sm outline-none"
+            type="text"
+          />
+          {touched.variant && (
+          <p className=" text-xs text-red-600 mt-2" id="email-error">
+          {errors.variant}
+        </p>
+        )}
+        </div>
+        <div className="flex flex-col">
+        <label className="text-white" htmlFor="">
+          Weight
+        </label>
+        <input
+          value={values.weight}
+          onChange={handleChange}
+          id="weight"
+          className="px-2 rounded-sm outline-none"
+          type="text"
+        />
+        {touched.weight && (
+          <p className=" text-xs text-red-600 mt-2" id="email-error">
+          {errors.weight}
+        </p>
+        )}
+        </div>
+        
+        <button className="rounded-sm bg-blue-500 font-semibold">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default Product;
