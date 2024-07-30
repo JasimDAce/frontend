@@ -29,6 +29,19 @@ const Signin = () => {
       console.log(values);
       // send values to backend
       axios.post('http://localhost:5000/user/add')
+      .then((response) => {
+        console.log(response.status);
+        resetForm();
+        toast.success('User Registered Successfully');
+        //router.push('it is used to redirect to any page')
+        router.push('/');
+      }).catch((err) => {
+        console.log(err);
+        if(err.response.data.code === 11000){
+          toast.error('Email already exists');
+        }
+        setSubmitting(false);
+      });
     },
     validationSchema: LoginSchema,
   });

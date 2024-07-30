@@ -1,6 +1,9 @@
 "use client";
+import axios from "axios";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 import * as yup from "yup";
 
 const BasicSchema = yup.object().shape({
@@ -10,11 +13,9 @@ const BasicSchema = yup.object().shape({
   weight: yup.number().required("Required"),
 });
 
-const onSubmit = () =>{
-  console.log("submitted")
-}
 
 const Product = () => {
+  const router = useRouter();
   const { values, handleBlur, handleChange, handleSubmit,errors,touched } = useFormik({
     initialValues: {
       product: "",
@@ -23,7 +24,20 @@ const Product = () => {
       weight: "",
     },
     validationSchema: BasicSchema,
-    onSubmit,
+    onSubmit : (values, {resetForm,setSubmitting}) =>{
+      console.log(values)
+      axios.post('http://localhost:5000/product/add',values)
+      .then((response) => {
+        console.log(response.status);
+        resetForm();
+        toast.success('User Registered Successfully');
+        //router.push('it is used to redirect to any page')
+        router.push('/');
+      }).catch((err) => {
+        console.log(err);
+        setSubmitting(false);
+      });
+    },
   });
   console.log(errors);
   return (
@@ -32,6 +46,7 @@ const Product = () => {
         action=""
         className="flex flex-col justify-right text-start bg-gray-500 p-14 pt-6 gap-4 rounded-lg"
         onSubmit={handleSubmit}
+         
       >
         <h1 className="text-center text-3xl font-bold pb-3 text-white">
           Products
@@ -108,7 +123,7 @@ const Product = () => {
         )}
         </div>
         
-        <button className="rounded-sm bg-blue-500 font-semibold">Submit</button>
+        <button className="rounded-sm bg-blue-500 font-semibold" type="submit">Submit</button>
       </form>
     </div>
   );
