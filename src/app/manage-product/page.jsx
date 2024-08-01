@@ -1,57 +1,26 @@
 'use client'
-import axios from 'axios';
-import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import axios from 'axios'
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
 
 
-const ManageUsers = () => {
-
-
-
-    const runOnce = useRef(false);
-
-    const [userList, setUserList] = useState([])
-
-    const fetchUsers = async () => {
-       const res = await axios.get('http://localhost:5000/user/getall')
-       console.table(res.data);
-       setUserList(res.data);
-    }
-
-    const deleteUser = (id) => {
-      axios.delete('http://localhost:5000/user/delete/' + id)
-      .then((result) => {
-        toast.success('User Deleted Successfully');
-        fetchUsers();
-      }).catch((err) => {
-        console.log(err);
-        toast.error('Failed to Delete')
-      });
+const ManageProduct = () => {
+    const [productData, setproductData] = useState([])
+    const fetch = async () =>{
+     const res = await axios.get('http://localhost:5000/product/getall')
+        console.table(res.data);
+        setproductData(res.data)
     }
 
     useEffect(() => {
-        //.current is used to access the value of runOnce
-     if(!runOnce.current){
-        fetchUsers();
-        runOnce.current = true;
-         
-     }
-      
-      //it will run 2 times when the app is open automatically
-    
-    //   return () => {
-    //     second
-    //   }
-    // use for even closing the tab 
+      fetch();
     }, [])
-    //if we delete third then the useeffect will runn continuoiuly
-    // third is used when some value is update
-    const displayUsers = () => {
-        return (
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+    
+  return (
+    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
             <thead className="bg-gray-50 dark:bg-neutral-800">
               <tr>
+               
                 <th scope="col" className="ps-6 py-3 text-start">
                   <label
                     htmlFor="hs-at-with-checkboxes-main"
@@ -72,21 +41,21 @@ const ManageUsers = () => {
                 >
                   <div className="flex items-center gap-x-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                      Name
+                      Product Name
                     </span>
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3 text-start">
                   <div className="flex items-center gap-x-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                      Position
+                    Weight in kg
                     </span>
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3 text-start">
                   <div className="flex items-center gap-x-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                      Status
+                    Variant
                     </span>
                   </div>
                 </th>
@@ -100,7 +69,7 @@ const ManageUsers = () => {
                 <th scope="col" className="px-6 py-3 text-start">
                   <div className="flex items-center gap-x-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                      Created
+                      Price
                     </span>
                   </div>
                 </th>
@@ -109,7 +78,8 @@ const ManageUsers = () => {
             </thead>
             <tbody className="dark:bg-neutral-800  divide-y divide-gray-200 dark:divide-neutral-700">
                 {
-                    userList.map(user=>{
+                    
+                    productData.map(user=>{
                         return (
                             <tr key= {user._id}>
                 <td className="size-px whitespace-nowrap">
@@ -130,7 +100,7 @@ const ManageUsers = () => {
                       
                       <div className="grow">
                         <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                          {user.name}
+                          {user.product}
                         </span>
                         
                       </div>
@@ -140,7 +110,7 @@ const ManageUsers = () => {
                 <td className="h-px w-72 whitespace-nowrap">
                   <div className="px-6 py-3">
                     <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                      {user.email}
+                      {user.price}
                     </span>
                     
                   </div>
@@ -148,7 +118,7 @@ const ManageUsers = () => {
                 <td className="size-px whitespace-nowrap">
                   <div className="px-6 py-3">
                     <span className="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                     {user.city}
+                     {user.variant}
                     </span>
                   </div>
                 </td>
@@ -174,7 +144,7 @@ const ManageUsers = () => {
                 <td className="size-px whitespace-nowrap">
                   <div className="px-6 py-3">
                     <span className="text-sm text-gray-500 dark:text-neutral-500">
-                      {new Date(user.createAt).toDateString()}
+                      {(user.weight)}
                     </span>
                   </div>
                 </td>
@@ -209,15 +179,7 @@ const ManageUsers = () => {
        
             </tbody>
           </table>
-        )
-    }
-    
-  return (
-    <div className='max-w-[80%] mx-auto'>
-        <h1 className='text-center font-bold text-3xl'>Manage Users</h1>
-        {displayUsers()}
-    </div>
   )
 }
 
-export default ManageUsers
+export default ManageProduct
