@@ -2,10 +2,24 @@
 import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 
 const ManageProduct = () => {
-    const [productData, setproductData] = useState([])
+    const [productData, setproductData] = useState([]);
+
+
+    const deleteUser = (id) => {
+      axios.delete('http://localhost:5000/product/deletebyid/' + id)
+      .then((result) => {
+        toast.success('User Deleted Successfully');
+        fetch();
+      }).catch((err) => {
+        console.log(err);
+        toast.error('Failed to Delete')
+        
+      });
+    }
     const fetch = async () =>{
      const res = await axios.get('http://localhost:5000/product/getall')
         console.table(res.data);
@@ -153,7 +167,7 @@ const ManageProduct = () => {
                     
                     <Link
                       className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-                      href={"/update-user/"+ user._id}
+                      href={"/update-product/"+ user._id}
                     >
                       Edit
                     </Link>

@@ -18,7 +18,7 @@ const ManageUsers = () => {
        console.table(res.data);
        setUserList(res.data);
     }
-
+  
     const deleteUser = (id) => {
       axios.delete('http://localhost:5000/user/delete/' + id)
       .then((result) => {

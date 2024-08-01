@@ -1,13 +1,14 @@
 "use client";
 import axios from "axios";
 import { Formik } from "formik";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const UpdateUser = () => {
   const { id } = useParams(); //what does this line means??
   const [userData, setuserData] = useState(null);
+  const router = useRouter();
   const getUserData = async () => {
     const res = await axios.get("http://localhost:5000/user/getbyid/" + id);
     console.log(res.data);
@@ -17,22 +18,18 @@ const UpdateUser = () => {
     getUserData();
   }, []);
 
-  const submitForm = (values, { resetForm, setSubmitting }) => {
+  const submitForm = (values, {setSubmitting }) => {
     console.log(values);
     axios
       .put("http://localhost:5000/user/update/" + id, values)
       .then((response) => {
         console.log(response.status);
-        resetForm();
+        router.back();
         toast.success("User Updated Successfully");
-        //router.push('it is used to redirect to any page')
-        //router.push('/');
       })
       .catch((err) => {
         console.log(err);
-
         toast.error("Not Updated");
-
         setSubmitting(false);
       });
   };
@@ -42,7 +39,7 @@ const UpdateUser = () => {
       <h1 className="text-center font-bold mt-5 text-3xl ">Update User</h1>
 
       {userData !== null ? (
-        <Formik initialValues={userData} onSubmit={{ submitForm }}>
+        <Formik initialValues={userData} onSubmit={ submitForm }>
           {(updateform) => {
             return (
               <form
