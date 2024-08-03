@@ -35,29 +35,17 @@ const Signup = () => {
       name: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      
     },
-    onSubmit: (values ,{resetForm ,setSubmitting}) => {
+    onSubmit: (values ,{resetForm,setSubmitting}) => {
       console.log(values);
-      // send values to backend
-      //making a request on backend to save data
-      //fetch or we can use axios 
-      //install axios
-      //https is secure and we have to have a certificate to use it
-      //fetch we have to set it in json in axios we dont need it
-      axios.post('http://localhost:5000/user/add',values)
-      .then((response) => {
-        console.log(response.status);
-        resetForm();
-        toast.success('User Registered Successfully');
-        //router.push('it is used to redirect to any page')
-        router.push('/');
+      axios.post('http://localhost:5000/user/authenticate',values)
+      .then((result) => {
+        toast.success('Login Success')
+        localStorage.setItem('token',result.data.token);
       }).catch((err) => {
         console.log(err);
-        if(err.response.data.code === 11000){
-          toast.error('Email already exists');
-        }
-        setSubmitting(false);
+        toast.error("not submitting")
       });
     },
     validationSchema: SignupSchema,
@@ -233,43 +221,7 @@ const Signup = () => {
                 </div>
                 {/* End Form Group */}
                 {/* Form Group */}
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm mb-2 dark:text-white"
-                  >
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="password"
-                      id="confirmPassword"
-                      onChange={signupForm.handleChange}
-                      value={signupForm.values.confirmPassword}
-                      className="py-3 px-4 block w-full border-gray-200 border-[1px] rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                      required=""
-                      aria-describedby="password-error"
-                    />
-                    <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                      <svg
-                        className="size-5 text-red-500"
-                        width={16}
-                        height={16}
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        aria-hidden="true"
-                      >
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                      </svg>
-                    </div>
-                  </div>
-                  {signupForm.touched.confirmPassword && (
-                    <p className=" text-xs text-red-600 mt-2"
-                      id="password-error">
-                      {signupForm.errors.confirmPassword}
-                    </p>
-                  )}
-                </div>
+              
                 {/* End Form Group */}
                 {/* Checkbox */}
                 <div className="flex items-center">
