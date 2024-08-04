@@ -45,7 +45,7 @@ const Signup = () => {
         localStorage.setItem('token',result.data.token);
       }).catch((err) => {
         console.log(err);
-        toast.error("not submitting")
+        toast.error(err.response.data.message)
       });
     },
     validationSchema: SignupSchema,
